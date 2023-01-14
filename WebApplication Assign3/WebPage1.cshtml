@@ -1,0 +1,115 @@
+﻿create table personsInfo
+
+(
+
+  Name varchar(100),
+
+   Mobile numeric(12,0),
+
+   Address varchar(20)
+
+)
+
+Stored Procedure for the table,
+
+create procedure [dbo].[strlogin]
+
+(
+
+
+)
+
+as
+
+insert into students values
+
+insert into students values( ("Ahmad",0781111,"Amman"), ("Sara", 0790000,"Irbid"),("Rami", 0772222,"Aqaba"))
+
+We now double-click on the button and use the following code,
+
+The Sample Code:
+
+protected void Button1_Click(object sender, EventArgs e)
+
+{
+
+    string strcon = "Data Source=.;Name=Ahmad; Mobile=0781111; Address=Amman; database=students";
+
+    SqlConnection con = new SqlConnection(strcon);
+
+    SqlCommand com = new SqlCommand("CName", con);
+
+    com.CommandType = System.Data.CommandType.StoredProcedure;
+
+    SqlParameter p1 = new SqlParameter("Name", TextBoxusername.Text);
+
+    SqlParameter p2 = new SqlParameter("Mobile", TextBoxpassword.Text);
+
+    SqlParameter p3 = new SqlParameter("Address", TextBoxpassword.Text);
+
+    com.Parameters.Add(p1);
+
+    com.Parameters.Add(p2);
+
+    com.Parameters.Add(p3);
+
+    con.Open();
+
+    SqlDataReader rd = com.ExecuteReader();
+
+    if (rd.HasRows)
+
+    {
+
+        rd.Read();
+
+        Label3.Text = "Valid Name";
+
+        Label3.Visible = true;
+
+    }
+
+    else
+
+    {
+
+        Label3.Text = "Invalid Name";
+
+        Label3.Visible = true;
+
+    }
+
+}
+@using WebMatrix.Data
+@{
+    var db = Database.Open("students");
+    var selectQueryString = "SELECT * FROM personsInfo ORDER BY Name";
+
+
+    var selectedData = db.Query(selectQueryString);
+    var grid = new WebGrid(source: selectedData);
+}
+<html>
+<body>
+    <div>
+        @grid.GetHtml()
+    </div>
+    <h1>Students</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Address</th>
+        </tr>
+        @foreach (var row in db.Query(selectQueryString))
+        {
+            <tr>
+                <td>@row.Name</td>
+                <td>@row.Mobile</td>
+                <td>@row.Address</td>
+            </tr>
+
+        }
+    </table>
+</body>
+</html>
